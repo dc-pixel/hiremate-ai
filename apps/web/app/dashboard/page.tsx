@@ -17,11 +17,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const token = localStorage.getItem('hiremate_token');
-    if (!token) {
-      router.replace('/login');
-      return;
-    }
-
+    if (!token) return void router.replace('/login');
     fetch(`${API_URL}/api/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
       .then(async (response) => {
         const body = await response.json();
@@ -45,30 +41,22 @@ export default function DashboardPage() {
   if (!data) return <main style={{ padding: 40 }}>Loading dashboard…</main>;
 
   const candidate = data.user.role === 'CANDIDATE';
-
   return (
     <main style={{ maxWidth: 1000, margin: '0 auto', padding: '64px 24px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
-          <p style={{ fontWeight: 700, letterSpacing: 1 }}>HIREMATE AI</p>
-          <h1>Welcome, {data.profile?.fullName ?? data.user.email}</h1>
-        </div>
+        <div><p style={{ fontWeight: 700, letterSpacing: 1 }}>HIREMATE AI</p><h1>Welcome, {data.profile?.fullName ?? data.user.email}</h1></div>
         <button onClick={logout} style={{ padding: '10px 16px' }}>Log out</button>
       </div>
       <section style={{ marginTop: 40, padding: 24, border: '1px solid #e2e8f0', borderRadius: 12 }}>
         <h2>{candidate ? 'Candidate workspace' : 'Recruiter workspace'}</h2>
-        <p>Email: {data.user.email}</p>
-        <p>Role: {data.user.role}</p>
+        <p>Email: {data.user.email}</p><p>Role: {data.user.role}</p>
         {data.profile?.companyName && <p>Company: {data.profile.companyName}</p>}
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 20 }}>
-          {candidate ? (
-            <>
-              <button onClick={() => router.push('/jobs')} style={{ padding: '10px 16px' }}>Explore jobs</button>
-              <button onClick={() => router.push('/applications')} style={{ padding: '10px 16px' }}>My applications</button>
-            </>
-          ) : (
-            <button onClick={() => router.push('/recruiter/jobs')} style={{ padding: '10px 16px' }}>Manage jobs & applicants</button>
-          )}
+          {candidate ? <>
+            <button onClick={() => router.push('/jobs')} style={{ padding: '10px 16px' }}>Explore jobs</button>
+            <button onClick={() => router.push('/applications')} style={{ padding: '10px 16px' }}>My applications</button>
+            <button onClick={() => router.push('/resumes')} style={{ padding: '10px 16px' }}>My resumes</button>
+          </> : <button onClick={() => router.push('/recruiter/jobs')} style={{ padding: '10px 16px' }}>Manage jobs & applicants</button>}
         </div>
       </section>
     </main>
