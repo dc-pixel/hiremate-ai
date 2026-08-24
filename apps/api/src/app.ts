@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import { authRouter } from './auth/routes.js';
+import { jobsRouter } from './jobs/routes.js';
 
 export const app = express();
 
@@ -17,3 +18,9 @@ app.get('/health', (_req, res) => {
 });
 
 app.use('/api/auth', authRouter);
+app.use('/api/jobs', jobsRouter);
+
+app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error(err);
+  return res.status(500).json({ error: 'Internal server error' });
+});
