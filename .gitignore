@@ -1,0 +1,17 @@
+node_modules/
+.pnpm-store/
+.next/
+dist/
+build/
+coverage/
+.env
+.env.local
+.env.*.local
+!.env.example
+*.log
+.DS_Store
+.vscode/
+.idea/
+*.tsbuildinfo
+prisma/*.db
+prisma/*.db-journal
