@@ -7,11 +7,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role { CANDIDATE RECRUITER ADMIN }
-enum ApplicationStatus { APPLIED SCREENING INTERVIEW REJECTED HIRED }
-enum InterviewStatus { PENDING IN_PROGRESS COMPLETED }
+enum Role {
+  CANDIDATE
+  RECRUITER
+  ADMIN
+}
 
-enum QuestionType { TECHNICAL BEHAVIORAL SITUATIONAL }
+enum ApplicationStatus {
+  APPLIED
+  SCREENING
+  INTERVIEW
+  REJECTED
+  HIRED
+}
+
+enum InterviewStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum QuestionType {
+  TECHNICAL
+  BEHAVIORAL
+  SITUATIONAL
+}
 
 model User {
   id String @id @default(cuid())
