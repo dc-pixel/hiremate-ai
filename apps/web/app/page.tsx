@@ -10,12 +10,12 @@ export default function HomePage() {
           A full-stack recruitment platform for candidates and recruiters, enhanced with AI-powered resume analysis, job matching, and interview evaluation.
         </p>
         <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>
-          <button style={{ padding: '12px 20px', borderRadius: 8, border: 0, cursor: 'pointer' }}>
-            Get started
-          </button>
-          <button style={{ padding: '12px 20px', borderRadius: 8, border: '1px solid #cbd5e1', background: 'white', cursor: 'pointer' }}>
-            Explore jobs
-          </button>
+          <a href="/register" style={{ padding: '12px 20px', borderRadius: 8, background: '#111827', color: 'white', textDecoration: 'none' }}>
+            Create account
+          </a>
+          <a href="/login" style={{ padding: '12px 20px', borderRadius: 8, border: '1px solid #cbd5e1', textDecoration: 'none' }}>
+            Sign in
+          </a>
         </div>
       </section>
     </main>
