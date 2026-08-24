@@ -7,6 +7,29 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
 type Role = 'CANDIDATE' | 'RECRUITER';
 
+type ApiResponse = { token?: string; error?: string; details?: unknown };
+
+async function readApiResponse(response: Response): Promise<ApiResponse> {
+  const contentType = response.headers.get('content-type') ?? '';
+  const raw = await response.text();
+
+  if (contentType.includes('application/json')) {
+    try {
+      return JSON.parse(raw) as ApiResponse;
+    } catch {
+      return { error: `The API returned invalid JSON (HTTP ${response.status}).` };
+    }
+  }
+
+  if (raw.trimStart().startsWith('<!DOCTYPE') || raw.trimStart().startsWith('<html')) {
+    return {
+      error: `HireMate API returned an HTML page instead of JSON (HTTP ${response.status}). Check that the API is running at ${API_URL}.`,
+    };
+  }
+
+  return { error: raw.slice(0, 300) || `Request failed (HTTP ${response.status}).` };
+}
+
 export default function RegisterPage() {
   const router = useRouter();
   const [role, setRole] = useState<Role>('CANDIDATE');
@@ -23,13 +46,21 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, role, fullName, companyName: role === 'RECRUITER' ? companyName : undefined }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? 'Registration failed');
+      let response: Response;
+      try {
+        response = await fetch(`${API_URL}/api/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, role, fullName, companyName: role === 'RECRUITER' ? companyName : undefined }),
+        });
+      } catch {
+        throw new Error(`Unable to connect to HireMate API at ${API_URL}. Start the backend with "pnpm --filter @hiremate/api dev".`);
+      }
+
+      const data = await readApiResponse(response);
+      if (!response.ok || !data.token) {
+        throw new Error(data.error ?? `Registration failed (HTTP ${response.status}).`);
+      }
 
       localStorage.setItem('hiremate_token', data.token);
       router.push('/dashboard');
