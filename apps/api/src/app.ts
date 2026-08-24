@@ -4,6 +4,7 @@ import path from 'node:path';
 import { authRouter } from './auth/routes.js';
 import { jobsRouter } from './jobs/routes.js';
 import { resumeRouter } from './resumes/routes.js';
+import { aiRouter } from './ai/routes.js';
 
 export const app = express();
 
@@ -23,6 +24,7 @@ app.use('/uploads', express.static(path.resolve(process.env.UPLOAD_DIR ?? './upl
 app.use('/api/auth', authRouter);
 app.use('/api/jobs', jobsRouter);
 app.use('/api/resumes', resumeRouter);
+app.use('/api/ai', aiRouter);
 
 app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error(err);
