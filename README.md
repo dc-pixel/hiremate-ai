@@ -1,28 +1,59 @@
 # HireMate AI
 
-Full-stack recruitment and AI-powered interview platform.
+A full-stack recruitment platform for candidates and recruiters, with AI-assisted resume analysis, semantic job matching and interview evaluation.
 
-## Planned stack
+## Current capabilities
+- JWT authentication and role-aware API routes
+- Resume parsing for PDF/DOCX uploads
+- AI resume analysis and job matching modules
+- Interview workflows and evaluation routes
+- Dashboard and job-management API modules
+- Next.js web application and Express/TypeScript API
+- Prisma/PostgreSQL database package
+- Environment-based secret configuration
 
-- Next.js + TypeScript
-- Node.js + Express
-- PostgreSQL + Prisma
-- JWT authentication and role-based access control
-- LLM-powered resume analysis and interview evaluation
-- Embeddings and RAG for semantic job/candidate matching
-
-## Monorepo structure
+## Monorepo
 
 ```text
-apps/
-  web/        Next.js frontend
-  api/        Node.js/Express API
-packages/
-  database/   Prisma schema and database client
+apps/web        Next.js frontend
+apps/api        Express + TypeScript API
+packages/database Prisma schema/client
 ```
 
-## Development status
+## Requirements
+- Node.js 20+
+- pnpm 10+
+- PostgreSQL
 
-Phase 1: project foundation.
+## Setup
 
-Secrets must be supplied through environment variables. Never commit `.env` files or API keys.
+```bash
+pnpm install
+cp .env.example .env
+pnpm db:generate
+pnpm db:push
+pnpm dev
+```
+
+The web app runs on the Next.js development port and the API runs from `apps/api`.
+
+## Quality checks
+
+```bash
+pnpm build
+pnpm lint
+pnpm test
+```
+
+## Security
+Never commit `.env`, API keys, JWT secrets, database credentials or uploaded resumes. Use `.env.example` as the configuration template.
+
+## Roadmap
+- Persistent recruiter/candidate dashboards
+- Production LLM provider integration
+- Embeddings/RAG matching pipeline
+- Automated interview scoring with audit trails
+- Production deployment for web, API and PostgreSQL
+
+## License
+MIT
