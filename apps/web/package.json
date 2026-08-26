@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "next lint",
-    "test": "echo web tests pending"
+    "lint": "tsc --noEmit",
+    "test": "tsc --noEmit"
   },
   "dependencies": {
     "next": "^15.5.0",
